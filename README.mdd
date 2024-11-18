@@ -1,0 +1,2 @@
+To start, run:
+`sudo nixos-rebuild switch --flake /etc/nixos#default`
