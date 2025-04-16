@@ -11,8 +11,9 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
+  boot.blacklistedKernelModules = [ "rtw88_8821ce" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.rtl8821ce ];
+  
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/b7df0b41-b36f-45f0-ae34-d160fdd7c731";
       fsType = "ext4";

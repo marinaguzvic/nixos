@@ -1,2 +1,8 @@
 To start, run:
 `sudo nixos-rebuild switch --flake /etc/nixos#default`
+
+
+TODO:
+* Move nixos folder to home to not require SUDO premissions
+* setup different Window Manager
+
