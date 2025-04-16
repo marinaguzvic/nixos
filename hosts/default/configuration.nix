@@ -2,20 +2,30 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, outputs,  ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "nixos"; # Define your hostname.
+  networking.extraHosts = ''
+    127.0.0.1 pve
+  '';
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -33,12 +43,12 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
+  #
+  # # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
+  # # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
     variant = "";
@@ -56,7 +66,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -70,23 +80,38 @@
   users.users.marinadj = {
     isNormalUser = true;
     description = "Marina Djordjevic";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
-
   home-manager = {
-    extraSpecialArgs = { inherit inputs ; 
-    pkgs-stable = import inputs.nixpkgs-stable { system = "x86_64-linux"; config = { allowUnfree = true; }; };};
+    extraSpecialArgs = {
+      inherit inputs;
+      pkgs-stable = import inputs.nixpkgs-stable {
+        system = "x86_64-linux";
+        config = {
+          allowUnfree = true;
+        };
+      };
+    };
     # pkgs-stable = inputs.nixpkgs-stable.legacyPackages.x86_64-linux;};
-	
+
     users = {
-      "marinadj" = import ./home.nix;
+      "marinadj" = {
+        imports = [
+          ./home.nix
+          inputs.catppuccin.homeManagerModules.catppuccin
+        ];
+      };
+      # import ./home.nix;
     };
   };
-
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -96,13 +121,21 @@
     slack
     chromium
     gnomeExtensions.appindicator
-    gnomeExtensions.pop-shell
+    # gnomeExtensions.pop-shell
+    gnomeExtensions.forge
+    gnomeExtensions.space-bar
     lshw
+    unzip
+    trayscale
+    wmctrl
   ];
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   services.tailscale.enable = true;
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -110,7 +143,9 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
+  programs.hyprland.enable = true;
+  programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -153,11 +188,31 @@
       swtpm.enable = true;
       ovmf = {
         enable = true;
-        packages = [(pkgs.OVMF.override {
-          secureBoot = true;
-          tpmSupport = true;
-        }).fd];
+        packages = [
+          (pkgs.OVMF.override {
+            secureBoot = true;
+            tpmSupport = true;
+          }).fd
+        ];
       };
     };
   };
+
+  # services.datomic-pro = {
+  #   enable = true;
+  #   secretsFile = "/etc/datomic-pro/secrets.properties";
+  #   settings = {
+  #     # no secrets in here!
+  #     enable = true;
+  #     host = "localhost";
+  #     port = 4334;
+  #     memory-index-max = "256m";
+  #     memory-index-threshold = "32m";
+  #     object-cache-max = "128m";
+  #     protocol = "dev";
+  #     storage-access = "remote";
+  #   };
+  # };
+  # optionally add the console
+
 }

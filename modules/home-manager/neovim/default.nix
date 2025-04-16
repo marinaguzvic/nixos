@@ -9,6 +9,7 @@
     in
     {
       enable = true;
+      catppuccin.enable = true;
 
       viAlias = true;
       vimAlias = true;
@@ -19,6 +20,7 @@
         nil
         luajitPackages.lua-lsp
         luajitPackages.jsregexp
+        python312Packages.pynvim
         xclip
         wl-clipboard
         clojure-lsp
@@ -44,7 +46,14 @@
       plugins = with pkgs.vimPlugins; [
         # Editting and formatting
         nvim-comment
-        todo-comments-nvim
+        {
+          plugin = todo-comments-nvim;
+          config = toLua "require('todo-comments').setup({ signs = false})";
+        }
+        {
+          plugin = avante-nvim;
+          config = toLuaFile ./nvim/plugins/avante.lua;
+        }
         indent-blankline-nvim
         vim-repeat
         vim-surround
@@ -89,6 +98,7 @@
         luasnip
         cmp_luasnip
         cmp-path
+        cmp-nvim-lsp-signature-help
         {
           plugin = friendly-snippets;
           config = toLua "require('luasnip.loaders.from_vscode').lazy_load()";

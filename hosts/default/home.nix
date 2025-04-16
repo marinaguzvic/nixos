@@ -1,6 +1,80 @@
-{ config, pkgs, pkgs-stable, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  pkgs-stable,
+  ...
+}:
+
+let
+  startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
+    ${pkgs.waybar}/bin/waybar &
+    ${pkgs.swww}/bin/swww init &
+
+    sleep 1
+
+  '';
+in
+# ${pkgs.swww}/bin/swww img ${./wallpapers/wallpaper.jpeg} &
+{
+  wayland.windowManager.hyprland = {
+    enable = true;
+
+    settings = {
+      exec-once = ''${startupScript}/bin/start'';
+      "$mainMod" = "SUPER";
+
+      monitor = [
+        # Right physical monitor placed on the left (DP-1)
+        "eDP-1, 1920x1080, 1920x0, 1.0"
+
+        # Left physical monitor placed on the right (HDMI-A-1)
+        "HDMI-A-1, 1920x1080, 0x0, 1.0"
+      ];
+
+      bind = [
+        "$mainMod, S, exec, rofi -show drun -show-icons"
+
+        # Move between workspaces
+        "$mainMod, comma, workspace, m-1"
+        "$mainMod, period, workspace, m+1"
+
+        # Move focused window to workspace 1–9 using $mainMod + SHIFT + number
+        "$mainMod SHIFT, 1, movetoworkspace, 1"
+        "$mainMod SHIFT, 2, movetoworkspace, 2"
+        "$mainMod SHIFT, 3, movetoworkspace, 3"
+        "$mainMod SHIFT, 4, movetoworkspace, 4"
+        "$mainMod SHIFT, 5, movetoworkspace, 5"
+        "$mainMod SHIFT, 6, movetoworkspace, 6"
+        "$mainMod SHIFT, 7, movetoworkspace, 7"
+        "$mainMod SHIFT, 8, movetoworkspace, 8"
+        "$mainMod SHIFT, 9, movetoworkspace, 9"
+
+        # Focus workspaces 1–9 with mainMod + number
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod, 4, workspace, 4"
+        "$mainMod, 5, workspace, 5"
+        "$mainMod, 6, workspace, 6"
+        "$mainMod, 7, workspace, 7"
+        "$mainMod, 8, workspace, 8"
+        "$mainMod, 9, workspace, 9"
+
+        # Move focus between windows with hjkl
+        "$mainMod, h, movefocus, l"
+        "$mainMod, j, movefocus, d"
+        "$mainMod, k, movefocus, u"
+        "$mainMod, l, movefocus, r"
+
+        # Move current workspace to other monitor
+        "$mainMod, bracketleft, movecurrentworkspacetomonitor, l"
+        "$mainMod, bracketright, movecurrentworkspacetomonitor, r"
+      ];
+    };
+
+  };
+  #
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "marinadj";
@@ -23,18 +97,38 @@
     pkgs.gitui
 
     pkgs.clojure
+    pkgs.jdk21_headless
+    pkgs.clj-kondo
     pkgs.rlwrap
 
+    pkgs._1password-gui
+
+    pkgs.joplin-desktop
     pkgs.oauth2c
     pkgs.python3
-
 
     pkgs.libreoffice
 
     # Notifications
     pkgs.libnotify
     pkgs.mako
-    
+
+    pkgs.sshpass
+
+    # pkgs.waybar
+    (pkgs.waybar.overrideAttrs (oldAttrs: {
+      mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+    }))
+    pkgs.dunst
+    pkgs.libnotify
+    pkgs.xdg-desktop-portal-gtk
+    pkgs.swww
+    pkgs.kitty
+    pkgs.rofi-wayland
+    pkgs.grim
+    pkgs.slurp
+    pkgs.wl-clipboard
+
     pkgs-stable.vagrant
     # pkgs.virt-manager
     (pkgs.nerdfonts.override {
@@ -96,38 +190,70 @@
   home.sessionVariables = {
     EDITOR = "vim";
   };
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
   programs.chromium = {
     enable = true;
     extensions = [
       { id = "aeblfdkhhhdcdjpifhhbdiojplfjncoa"; } # 1password
-      { id = "efaidnbmnnnibpcajpcglclefindmkaj"; } # Adobe Acrobat
+      { id = "jdlkkmamiaikhfampledjnhhkbeifokk"; } # PDF Viewer
     ];
   };
   programs.git = {
     enable = true;
+    extraConfig = {
+      safe.directory = "/etc/nixos";
+    };
     userName = "Marina Djordjevic";
     userEmail = "marina.guzvic@gmail.com";
   };
+
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      ll = "ls -lahrt";
+      ".." = "cd ..";
+
+      # Git
+      gm = "git commit -m";
+      ga = "git add";
+      gsr = "git reset --soft HEAD~1";
+      gs = "git status";
+      gpo = "git push origin";
+      gcb = "git checkout -b";
+      gsth = "git stash --keep-index";
+    };
+  };
+
+  programs.kitty.enable = true;
+
+  services.dunst.enable = true;
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  
+
   imports = [
     ../../modules/home-manager/neovim/default.nix
     ../../modules/home-manager/autostart/default.nix
   ];
   dconf.settings = {
     "org/gnome/shell" = {
-        disable-user-extensions = false;
-        disabled-extensions = "disabled";
-        enabled-extensions = [
-          "pop-shell@system76.com"
-          "system-monitor@gnome-shell-extensions.gcampax.github.com"
-          "hidetopbar@mathieu.bidon.ca"
-          "notification-timeout@chlumskyvaclav.gmail.com"
-        ];
-      };
+      disable-user-extensions = false;
+      disabled-extensions = "disabled";
+      enabled-extensions = [
+        # "pop-shell@system76.com"
+        "forge@jmmaranan.com"
+        "space-bar@luchrioh"
+        "system-monitor@gnome-shell-extensions.gcampax.github.com"
+        "hidetopbar@mathieu.bidon.ca"
+        "notification-timeout@chlumskyvaclav.gmail.com"
+      ];
+    };
     "org/gnome/desktop/wm/keybindings" = {
       # activate-window-menu = "disabled";
     };
   };
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 }
