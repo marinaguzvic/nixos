@@ -7,6 +7,7 @@
   pkgs,
   inputs,
   outputs,
+  nix-colors,
   ...
 }:
 
@@ -93,6 +94,7 @@
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
+      inherit nix-colors;
       pkgs-stable = import inputs.nixpkgs-stable {
         system = "x86_64-linux";
         config = {
@@ -106,6 +108,7 @@
       "marinadj" = {
         imports = [
           ./home.nix
+
           inputs.catppuccin.homeManagerModules.catppuccin
         ];
       };
@@ -124,12 +127,13 @@
     # gnomeExtensions.pop-shell
     gnomeExtensions.forge
     gnomeExtensions.space-bar
+    _1password-gui
     lshw
     unzip
     trayscale
     wmctrl
   ];
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   services.tailscale.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
