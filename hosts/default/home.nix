@@ -3,25 +3,34 @@
   pkgs,
   lib,
   pkgs-stable,
+  nix-colors,
   ...
 }:
 
 let
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
-    ${pkgs.waybar}/bin/waybar &
-    ${pkgs.swww}/bin/swww init &
+    ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator &
+       ${pkgs.dunst}/bin/dunst &
+       ${pkgs.waybar}/bin/waybar &
+       ${pkgs.swww}/bin/swww init &
 
-    sleep 1
+       sleep 1
 
+    ${pkgs.swww}/bin/swww img ${./wallpapers/wallpaper.jpeg} &
+       
   '';
 in
-# ${pkgs.swww}/bin/swww img ${./wallpapers/wallpaper.jpeg} &
 {
   wayland.windowManager.hyprland = {
     enable = true;
 
     settings = {
-      exec-once = ''${startupScript}/bin/start'';
+      exec-once = [
+        ''${startupScript}/bin/start''
+        "[workspace 3 silent] slack"
+        "[workspace 2 silent] chromium-browser"
+        "[workspace 1 silent] kitty"
+      ];
       "$mainMod" = "SUPER";
 
       monitor = [
@@ -30,6 +39,12 @@ in
 
         # Left physical monitor placed on the right (HDMI-A-1)
         "HDMI-A-1, 1920x1080, 0x0, 1.0"
+      ];
+      # Rules to assign apps to specific workspaces (and monitors)
+      workspace = [
+        "1, monitor:HDMI-A-1"
+        "2, monitor:eDP-1"
+        "3, monitor:eDP-1"
       ];
 
       bind = [
@@ -77,6 +92,7 @@ in
   #
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
+  colorScheme = nix-colors.colorSchemes.catppuccin-mocha;
   home.username = "marinadj";
   home.homeDirectory = "/home/marinadj";
 
@@ -101,8 +117,6 @@ in
     pkgs.clj-kondo
     pkgs.rlwrap
 
-    pkgs._1password-gui
-
     pkgs.joplin-desktop
     pkgs.oauth2c
     pkgs.python3
@@ -115,10 +129,6 @@ in
 
     pkgs.sshpass
 
-    # pkgs.waybar
-    (pkgs.waybar.overrideAttrs (oldAttrs: {
-      mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-    }))
     pkgs.dunst
     pkgs.libnotify
     pkgs.xdg-desktop-portal-gtk
@@ -128,6 +138,7 @@ in
     pkgs.grim
     pkgs.slurp
     pkgs.wl-clipboard
+    pkgs.networkmanagerapplet
 
     pkgs-stable.vagrant
     # pkgs.virt-manager
@@ -192,6 +203,7 @@ in
   };
   catppuccin.flavor = "mocha";
   catppuccin.enable = true;
+
   programs.chromium = {
     enable = true;
     extensions = [
@@ -222,6 +234,7 @@ in
       gpo = "git push origin";
       gcb = "git checkout -b";
       gsth = "git stash --keep-index";
+      eni = "nvim /etc/nixos";
     };
   };
 
@@ -233,8 +246,9 @@ in
   programs.home-manager.enable = true;
 
   imports = [
+    nix-colors.homeManagerModules.default
     ../../modules/home-manager/neovim/default.nix
-    ../../modules/home-manager/autostart/default.nix
+    ../../modules/home-manager/wayland/waybar.nix
   ];
   dconf.settings = {
     "org/gnome/shell" = {
@@ -254,6 +268,12 @@ in
     };
   };
 
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    configPackages = [
+      pkgs.xdg-desktop-portal-gnome
+    ];
+  };
+
 }
