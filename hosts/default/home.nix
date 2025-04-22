@@ -47,6 +47,14 @@ in
         "3, monitor:eDP-1"
       ];
 
+      general = {
+        gaps_out = 8;
+      };
+
+      decoration = {
+        rounding = 5;
+      };
+
       bind = [
         "$mainMod, S, exec, rofi -show drun -show-icons"
 
