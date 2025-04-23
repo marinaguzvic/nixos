@@ -18,6 +18,7 @@
         modules-right = [
           "pulseaudio/slider"
           "pulseaudio#percentage"
+          "tray"
         ];
         "hyprland/workspaces" = {
           on-click = "activate";
@@ -121,6 +122,12 @@
         border-bottom-left-radius: 5px;
       }
 
+      #tray {
+        border-bottom:1px solid @border;
+        border-radius: 5px;
+        padding: 10px 0px;
+      }
+
       #workspaces button {
         font-size: 18pt;
         padding: 2px;
@@ -152,7 +159,7 @@
         background-color: @hover;
       }
 
-      #pulseaudio, #clock, #clock.date, #clock.time {
+      #pulseaudio, #clock, #clock.date, #clock.time, #tray {
         background: @modulesbg;
       }
 
@@ -215,6 +222,17 @@
         margin: 0px 0px;
         padding: 2px 5px;
         color: @text;
+      }
+
+      #tray menu {
+      	background: @mainbg;
+      	border: 1px solid @border;
+      	border-radius: 5px;
+      }
+
+      #tray menu menuitem:hover {
+        background-color: @modulesbg;
+        color: @border;
       }
     '';
   };
