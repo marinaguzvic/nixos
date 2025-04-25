@@ -132,6 +132,7 @@
     unzip
     trayscale
     wmctrl
+    psi-notify
   ];
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   services.tailscale.enable = true;

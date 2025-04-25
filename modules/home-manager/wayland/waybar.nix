@@ -18,8 +18,28 @@
         modules-right = [
           "pulseaudio/slider"
           "pulseaudio#percentage"
+          "battery"
+          "disk"
           "tray"
         ];
+        "battery" = {
+          bat = "BAT0";
+          interval = 60;
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon} {capacity}%";
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
+          max-length = 25;
+        };
+
         "hyprland/workspaces" = {
           on-click = "activate";
           format = "{icon}";
@@ -45,7 +65,14 @@
           rotate = 270;
         };
         "clock#time" = {
-          format = "{:%I:%M}";
+          format = "{:%H:%M}";
+        };
+        "disk" = {
+          interval = 30;
+          format = "{percentage_free} %";
+          tooltip-format = "{specific_used:0.2f} GB out of {specific_total:0.2f} GB used.";
+          tooltip = true;
+          unit = "GB";
         };
         "pulseaudio" = {
           format = "{icon}";
@@ -159,7 +186,7 @@
         background-color: @hover;
       }
 
-      #pulseaudio, #clock, #clock.date, #clock.time, #tray {
+      #pulseaudio, #clock, #clock.date, #clock.time, #tray, #battery, #disk {
         background: @modulesbg;
       }
 
@@ -234,6 +261,19 @@
         background-color: @modulesbg;
         color: @border;
       }
+
+      #battery {
+        font-size: 12px;
+        color: @text;
+        padding: 10px 0px;
+      }
+
+      #disk {
+        font-size: 12px;
+        color: @text;
+        padding: 10px 0px;
+      }
+
     '';
   };
 }
