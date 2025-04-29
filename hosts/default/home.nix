@@ -47,6 +47,14 @@ in
         "3, monitor:eDP-1"
       ];
 
+      windowrulev2 = [
+        "noanim, class:^(flameshot)$"
+        "float, class:^(flameshot)$"
+        "move 0 0, class:^(flameshot)$"
+        "pin, class:^(flameshot)$"
+        "monitor 1, class:^(flameshot)$"
+      ];
+
       general = {
         gaps_out = 8;
       };
@@ -56,6 +64,8 @@ in
       };
 
       bind = [
+        "$mainMod, P, exec, XDG_CURRENT_DESKTOP=sway flameshot gui"
+
         "$mainMod, S, exec, rofi -show drun -show-icons"
 
         # Move between workspaces
@@ -139,6 +149,9 @@ in
 
     pkgs.dunst
     pkgs.libnotify
+    (pkgs.flameshot.overrideAttrs (old: {
+      cmakeFlags = old.cmakeFlags or [ ] ++ [ "-DUSE_WAYLAND_GRIM=ON" ];
+    })) # Only do this for wayland config
     pkgs.xdg-desktop-portal-gtk
     pkgs.swww
     pkgs.kitty
