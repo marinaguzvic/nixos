@@ -297,4 +297,20 @@ in
     ];
   };
 
+  systemd.user.services.psi-notify = {
+    Unit = {
+      Description = "psi-notify daemon";
+      After = [ "graphical-session.target" ];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.psi-notify}/bin/psi-notify";
+      Restart = "on-failure";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
 }
