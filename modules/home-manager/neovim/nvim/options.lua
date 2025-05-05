@@ -67,3 +67,86 @@ vim.keymap.set("v", "<leader>r", function()
 	-- Restore original register
 	vim.fn.setreg('"', old_reg, old_regtype)
 end, { desc = "Search and replace visual selection" })
+
+-- Add a shorcut to copy to clipboard the test name for Clojure files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "clojure",
+	callback = function()
+		vim.keymap.set("n", "<localleader>ct", function()
+			local ns = nil
+			local test_name = nil
+
+			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+			local cursor_row = vim.api.nvim_win_get_cursor(0)[1]
+
+			-- Extract the namespace form
+			local ns_lines = {}
+			local found_ns = false
+			local paren_depth = 0
+
+			for _, line in ipairs(lines) do
+				if not found_ns then
+					if line:match("^%s*%(%s*ns%s") then
+						found_ns = true
+					end
+				end
+
+				if found_ns then
+					table.insert(ns_lines, line)
+
+					-- crude paren tracking
+					for c in line:gmatch(".") do
+						if c == "(" then
+							paren_depth = paren_depth + 1
+						elseif c == ")" then
+							paren_depth = paren_depth - 1
+						end
+					end
+
+					if paren_depth <= 0 then
+						break
+					end
+				end
+			end
+
+			if #ns_lines > 0 then
+				local joined = table.concat(ns_lines, " ")
+				ns = joined:match("%(ns%s+([%w%._%-]+)")
+			end
+
+			-- First look down (including cursor line)
+			for i = cursor_row, math.min(cursor_row + 10, #lines) do
+				local line = lines[i]
+				local match = line:match("%(deftest%s+[^%s%(%)]+%s+([%w%-_%?!]+)")
+					or line:match("%(deftest%s+([%w%-_%?!]+)")
+				if match then
+					test_name = match
+					break
+				end
+			end
+
+			-- If not found, look upwards
+			if not test_name then
+				for i = cursor_row - 1, math.max(cursor_row - 15, 1), -1 do
+					local line = lines[i]
+					local match = line:match("%(deftest%s+[^%s%(%)]+%s+([%w%-_%?!]+)")
+						or line:match("%(deftest%s+([%w%-_%?!]+)")
+					if match then
+						test_name = match
+						break
+					end
+				end
+			end
+			if ns and test_name then
+				local full_name = ns .. "/" .. test_name
+				vim.fn.setreg("+", full_name)
+				vim.notify("Copied: " .. full_name, vim.log.levels.INFO)
+			else
+				vim.notify(
+					"Namespace or test name not found.\nns: " .. tostring(ns) .. "\ntest: " .. tostring(test_name),
+					vim.log.levels.ERROR
+				)
+			end
+		end, { buffer = true, desc = "Copy Clojure test name", noremap = true, silent = true })
+	end,
+})
