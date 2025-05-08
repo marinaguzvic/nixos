@@ -148,6 +148,15 @@
           plugin = which-key-nvim;
           config = toLuaFile ./nvim/plugins/which-key.lua;
         }
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "vim-github-link";
+          src = pkgs.fetchFromGitHub {
+            owner = "knsh14";
+            repo = "vim-github-link";
+            rev = "master"; # or a specific commit hash
+            sha256 = "sha256-FGPtU+/sEULde5G2xwqVqf9kIWwUE426/Ot7uZoW8Pk="; # Fill in correct hash
+          };
+        })
 
       ];
 
