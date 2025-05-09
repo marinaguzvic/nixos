@@ -243,6 +243,9 @@ in
 
   programs.bash = {
     enable = true;
+    sessionVariables = {
+      TERM = "xterm-256color";
+    };
     shellAliases = {
       ll = "ls -lahrt";
       ".." = "cd ..";

@@ -1,7 +1,12 @@
 -- See `:help cmp`
 local cmp = require("cmp")
 local luasnip = require("luasnip")
-luasnip.config.setup({})
+luasnip.config.setup({
+	on_attach = function(_, bufnr)
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
+		vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { buffer = bufnr })
+	end,
+})
 
 cmp.setup({
 	snippet = {

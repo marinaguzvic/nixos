@@ -133,6 +133,7 @@
     trayscale
     wmctrl
     psi-notify
+    dnsutils
   ];
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   services.tailscale.enable = true;
