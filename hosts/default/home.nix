@@ -140,6 +140,7 @@ in
     pkgs.python3
 
     pkgs.libreoffice
+    pkgs.galculator
 
     # Notifications
     pkgs.libnotify
