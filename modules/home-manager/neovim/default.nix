@@ -149,6 +149,10 @@
           config = toLuaFile ./nvim/plugins/which-key.lua;
         }
         {
+          plugin = lsp_signature-nvim;
+          config = toLuaFile ./nvim/plugins/lsp-signature.lua;
+        }
+        {
           plugin = (
             pkgs.vimUtils.buildVimPlugin {
               name = "vim-github-link";
@@ -162,6 +166,15 @@
           );
           config = toLuaFile ./nvim/plugins/gh-link.lua;
         }
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "vim-qfedit";
+          src = pkgs.fetchFromGitHub {
+            owner = "itchyny";
+            repo = "vim-qfedit";
+            rev = "master";
+            sha256 = "sha256-4ifqqrx293+jPCnxA+nqOj7Whr2FkM+iuQ8ycxs55X0=";
+          };
+        })
 
       ];
 
