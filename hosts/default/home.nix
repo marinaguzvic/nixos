@@ -264,6 +264,11 @@ in
     };
   };
 
+  home.file.".zprint.edn".text = ''
+    {:style :respectful
+     :pair {:justify? true}}
+  '';
+
   programs.kitty.enable = true;
 
   services.dunst.enable = true;
