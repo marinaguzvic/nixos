@@ -160,6 +160,10 @@ in
     pkgs.slurp
     pkgs.wl-clipboard
     pkgs.networkmanagerapplet
+    pkgs.pipewire
+    pkgs.wireplumber
+    pkgs.xdg-desktop-portal-hyprland
+
     pkgs.bundix
     pkgs.ruby
 
