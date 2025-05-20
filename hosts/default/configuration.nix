@@ -152,6 +152,7 @@
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.TERM="xterm-256color";
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
