@@ -160,6 +160,8 @@ in
     pkgs.slurp
     pkgs.wl-clipboard
     pkgs.networkmanagerapplet
+    pkgs.bundix
+    pkgs.ruby
 
     pkgs-stable.vagrant
     # pkgs.virt-manager
