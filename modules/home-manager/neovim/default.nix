@@ -30,6 +30,7 @@
         hadolint
 
         stylua
+        black
         isort
         prettierd
         zprint

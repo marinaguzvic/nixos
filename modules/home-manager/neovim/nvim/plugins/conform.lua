@@ -7,10 +7,11 @@ require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "isort", "black" },
-		javascript = { { "prettierd", "prettier" } },
+		javascript = { { "prettierd" } },
 		clojure = { "zprint" },
 		-- clojure = { 'cljfmt' },
 		nix = { "nixfmt" },
+    yaml = { "prettierd" },
 	},
 })
 vim.g.mapleader = " "
