@@ -270,7 +270,7 @@ in
   };
 
   home.file.".zprint.edn".text = ''
-    {:style :respectful
+    {:style :community
      :pair {:justify? true}}
   '';
 
