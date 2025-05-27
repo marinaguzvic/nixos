@@ -167,6 +167,15 @@
           );
           config = toLuaFile ./nvim/plugins/gh-link.lua;
         }
+        {
+          plugin = vim-fugitive;
+          config = toLuaFile ./nvim/plugins/fugitive.lua;
+        }
+        {
+          plugin = vim-projectionist;
+          config = toLuaFile ./nvim/plugins/projectionist.lua;
+        }
+        # what's this plugin for?
         (pkgs.vimUtils.buildVimPlugin {
           name = "vim-qfedit";
           src = pkgs.fetchFromGitHub {
