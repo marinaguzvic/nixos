@@ -61,6 +61,10 @@
         vim-sexp
         conjure
         {
+          plugin = aerial;
+          config = toLuaFile ./nvim/plugins/aerial.lua;
+        }
+        {
           plugin = nvim-lint;
           config = toLuaFile ./nvim/plugins/nvim-lint.lua;
         }

@@ -128,6 +128,7 @@
     gnomeExtensions.forge
     gnomeExtensions.space-bar
     _1password-gui
+    _1password-cli
     lshw
     unzip
     trayscale
@@ -151,6 +152,8 @@
   # };
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+  programs._1password.enable = true;
+  programs._1password-gui.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.TERM="xterm-256color";
   # List services that you want to enable:
@@ -203,6 +206,14 @@
         ];
       };
     };
+  };
+services.ollama = {
+    enable = true;
+    # Optional: preload models, see https://ollama.com/library
+    loadModels = [
+      "llama3.2:3b"
+      "deepseek-r1:1.5b"
+    ];
   };
 
   # services.datomic-pro = {
