@@ -19,6 +19,7 @@ let
     ${pkgs.swww}/bin/swww img ${./wallpapers/wallpaper.jpeg} &
        
   '';
+  nvimAi = import ../../modules/home-manager/neovim/nvim-ai.nix { inherit pkgs; };
 in
 {
   wayland.windowManager.hyprland = {
@@ -126,6 +127,7 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
+    nvimAi
     # git
     pkgs.git
     pkgs.gitui
@@ -164,6 +166,8 @@ in
     pkgs.pipewire
     pkgs.wireplumber
     pkgs.xdg-desktop-portal-hyprland
+    pkgs.leiningen
+
 
     pkgs.bundix
     pkgs.ruby
