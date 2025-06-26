@@ -126,6 +126,7 @@ in
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
+nixpkgs.config.allowUnfree = true; # Add this line
   home.packages = [
     nvimAi
     # git
@@ -168,21 +169,20 @@ in
     pkgs.xdg-desktop-portal-hyprland
     pkgs.leiningen
 
+    pkgs.code-cursor
+
 
     pkgs.bundix
     pkgs.ruby
 
+    # pkgs.IBMPlexMono
+    pkgs.nerd-fonts.iosevka
+    pkgs.nerd-fonts.iosevka-term
+
+
     pkgs-stable.vagrant
     # pkgs.virt-manager
-    (pkgs.nerdfonts.override {
-      fonts = [
-        "IBMPlexMono"
-        "Iosevka"
-        "IosevkaTerm"
-      ];
-    })
-
-    # # Adds the 'hello' command to your environment. It prints a friendly
+        # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
 
@@ -199,6 +199,10 @@ in
     #   echo "Hello, ${config.home.username}!"
     # '')
   ];
+
+  fonts.fontconfig.enable = true;
+
+  
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
@@ -274,8 +278,7 @@ in
   };
 
   home.file.".zprint.edn".text = ''
-    {:style :community
-     :pair {:justify? true}}
+    {:style :justified}
   '';
 
   programs.kitty.enable = true;
