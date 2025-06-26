@@ -109,7 +109,7 @@
         imports = [
           ./home.nix
 
-          inputs.catppuccin.homeManagerModules.catppuccin
+          inputs.catppuccin.homeModules.catppuccin
         ];
       };
       # import ./home.nix;
@@ -119,6 +119,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nh
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     slack
@@ -128,6 +129,7 @@
     gnomeExtensions.forge
     gnomeExtensions.space-bar
     _1password-gui
+    _1password-cli
     lshw
     unzip
     trayscale
@@ -151,6 +153,8 @@
   # };
   programs.hyprland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+  programs._1password.enable = true;
+  programs._1password-gui.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.sessionVariables.TERM="xterm-256color";
   # List services that you want to enable:
@@ -174,15 +178,7 @@
   xdg.portal.enable = true;
   fonts.fontDir.enable = true;
 
-  # # Setup cron jobs - TODO: lookup replacing with systemd-timers
-  # services.cron = {
-  #   enable = true;
-  #   systemCronJobs = [
-  #     #  "*/1 * * * *      marinadj    /home/marinadj/.nix-profile/bin/notify-send -w \"Make a note of what you're up to! - time is $(date '+\%X')\""
-  #     "*/1 * * * *       marinadj    DISPLAY=:1 DBUS_SESSION_BUS_ADDRESS=/run/user/1000/bus /home/marinadj/.nix-profile/bin/notify-send  -w \"Make a note of what you're up to!\""
-  #   ];
-  # };
-  #
+  
   # Virtualization
   virtualisation.docker.enable = true;
   virtualisation.virtualbox.host.enable = true;
@@ -204,22 +200,5 @@
       };
     };
   };
-
-  # services.datomic-pro = {
-  #   enable = true;
-  #   secretsFile = "/etc/datomic-pro/secrets.properties";
-  #   settings = {
-  #     # no secrets in here!
-  #     enable = true;
-  #     host = "localhost";
-  #     port = 4334;
-  #     memory-index-max = "256m";
-  #     memory-index-threshold = "32m";
-  #     object-cache-max = "128m";
-  #     protocol = "dev";
-  #     storage-access = "remote";
-  #   };
-  # };
-  # optionally add the console
 
 }

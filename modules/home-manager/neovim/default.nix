@@ -61,6 +61,10 @@
         vim-sexp
         conjure
         {
+          plugin = aerial-nvim;
+          config = toLuaFile ./nvim/plugins/aerial.lua;
+        }
+        {
           plugin = nvim-lint;
           config = toLuaFile ./nvim/plugins/nvim-lint.lua;
         }
@@ -84,6 +88,7 @@
         plenary-nvim
         telescope-fzf-native-nvim
         telescope-ui-select-nvim
+        telescope-file-browser-nvim
         nvim-web-devicons
         {
           plugin = telescope-nvim;
