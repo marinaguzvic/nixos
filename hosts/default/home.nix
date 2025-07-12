@@ -64,6 +64,12 @@ in
         rounding = 5;
       };
 
+      input = {
+        kb_layout = "us,rs";
+        kb_variant = ",latin";
+        kb_options = "grp:caps_toggle";
+      };
+
       bind = [
         "$mainMod, P, exec, XDG_CURRENT_DESKTOP=sway flameshot gui"
 

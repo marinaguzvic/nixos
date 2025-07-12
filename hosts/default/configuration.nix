@@ -51,8 +51,9 @@
 
   # # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+    layout = "us,rs";
+    variant = ",latin";
+    options = "grp:caps_toggle";
   };
 
   # Enable CUPS to print documents.
@@ -200,5 +201,4 @@
       };
     };
   };
-
 }
