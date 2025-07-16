@@ -287,7 +287,14 @@ nixpkgs.config.allowUnfree = true; # Add this line
     {:style :justified}
   '';
 
-  programs.kitty.enable = true;
+  programs.kitty = {
+
+    
+    keybindings = {
+      "cmd+shift+t" = "new_tab_with_cwd";
+    };
+    enable = true;
+  };
 
   services.dunst.enable = true;
 
