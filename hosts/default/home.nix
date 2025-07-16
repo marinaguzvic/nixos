@@ -157,6 +157,8 @@ nixpkgs.config.allowUnfree = true; # Add this line
 
     pkgs.sshpass
 
+    pkgs.mtr
+
     pkgs.dunst
     pkgs.libnotify
     (pkgs.flameshot.overrideAttrs (old: {
