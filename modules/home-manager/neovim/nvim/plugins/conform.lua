@@ -10,6 +10,7 @@ require("conform").setup({
 		javascript = { { "prettierd" } },
 		clojure = { "zprint" },
 		-- clojure = { 'cljfmt' },
+    terraform = { "terraform_fmt"},
 		nix = { "nixfmt" },
     yaml = { "prettierd" },
 	},
