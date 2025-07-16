@@ -190,6 +190,18 @@
             sha256 = "sha256-4ifqqrx293+jPCnxA+nqOj7Whr2FkM+iuQ8ycxs55X0=";
           };
         })
+        {
+          plugin = pkgs.vimUtils.buildVimPlugin {
+            name = "kubernetes-nvim";
+            src = pkgs.fetchFromGitHub {
+              owner = "diogo464";
+              repo = "kubernetes.nvim";
+              rev = "main";
+              sha256 = "sha256-zq8raDCY6uKf97esbQGNvPAMqi2LzIVt5lRlb53/5PU="; # Replace after first build
+            };
+          };
+          # config = toLuaFile ./nvim/plugins/kubernetes.lua;
+        }
 
       ];
 

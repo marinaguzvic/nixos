@@ -132,7 +132,7 @@ in
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-nixpkgs.config.allowUnfree = true; # Add this line
+  nixpkgs.config.allowUnfree = true; # Add this line
   home.packages = [
     nvimAi
     # git
@@ -157,6 +157,8 @@ nixpkgs.config.allowUnfree = true; # Add this line
 
     pkgs.sshpass
 
+    pkgs.mtr
+
     pkgs.dunst
     pkgs.libnotify
     (pkgs.flameshot.overrideAttrs (old: {
@@ -177,7 +179,6 @@ nixpkgs.config.allowUnfree = true; # Add this line
 
     pkgs.code-cursor
 
-
     pkgs.bundix
     pkgs.ruby
 
@@ -185,10 +186,9 @@ nixpkgs.config.allowUnfree = true; # Add this line
     pkgs.nerd-fonts.iosevka
     pkgs.nerd-fonts.iosevka-term
 
-
     pkgs-stable.vagrant
     # pkgs.virt-manager
-        # # Adds the 'hello' command to your environment. It prints a friendly
+    # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
 
@@ -208,7 +208,6 @@ nixpkgs.config.allowUnfree = true; # Add this line
 
   fonts.fontconfig.enable = true;
 
-  
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
@@ -287,7 +286,14 @@ nixpkgs.config.allowUnfree = true; # Add this line
     {:style :justified}
   '';
 
-  programs.kitty.enable = true;
+  programs.kitty = {
+
+    
+    keybindings = {
+      "cmd+shift+t" = "new_tab_with_cwd";
+    };
+    enable = true;
+  };
 
   services.dunst.enable = true;
 
