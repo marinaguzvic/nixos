@@ -26,6 +26,10 @@
   networking.hostName = "nixos"; # Define your hostname.
   networking.extraHosts = ''
     127.0.0.1 pve
+    127.0.0.1 dashboard.docker.localhost
+    172.24.253.2 dashboard.docker.localhost 
+    172.24.253.2 dashboard.marinahost whoami.marinahost
+
   '';
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -55,6 +59,14 @@
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns = true;          # Enables mDNS resolution via NSS
+    publish.enable = true;   # Optional: allows advertising services
+    publish.addresses = true;
+    publish.domain = true;
+    publish.workstation = true;
+  };
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -89,6 +101,7 @@
     extraSpecialArgs = {
       inherit inputs;
       inherit nix-colors;
+      neovim-config = inputs.neovim-config;
       pkgs-stable = import inputs.nixpkgs-stable {
         system = "x86_64-linux";
         config = {
@@ -130,6 +143,12 @@
     wmctrl
     psi-notify
     dnsutils
+    inetutils
+    mqttui
+    pciutils
+    speedtest-cli
+
+
   ];
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   services.tailscale.enable = true;
@@ -175,7 +194,7 @@
   
   # Virtualization
   virtualisation.docker.enable = true;
-  virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "marinadj" ];
   virtualisation.libvirtd = {
     enable = true;
@@ -183,15 +202,7 @@
       package = pkgs.qemu_kvm;
       runAsRoot = true;
       swtpm.enable = true;
-      ovmf = {
-        enable = true;
-        packages = [
-          (pkgs.OVMF.override {
-            secureBoot = true;
-            tpmSupport = true;
-          }).fd
-        ];
-      };
+      
     };
   };
 }

@@ -5,12 +5,13 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     catppuccin.url = "github:catppuccin/nix";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nix-colors.url = "github:misterio77/nix-colors";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim-config.url = "github:marinaguzvic/neovim-nix";
   };
 
   outputs =
@@ -20,6 +21,7 @@
       nixpkgs-stable,
       catppuccin,
       nix-colors,
+      neovim-config,
       ...
     }@inputs:
     let

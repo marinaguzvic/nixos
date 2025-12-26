@@ -7,7 +7,7 @@ require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "isort", "black" },
-		javascript = { { "prettierd" } },
+		javascript = {  "prettierd" , stop_after_first = true },
 		clojure = { "zprint" },
 		-- clojure = { 'cljfmt' },
     terraform = { "terraform_fmt"},

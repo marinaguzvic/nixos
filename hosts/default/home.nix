@@ -4,6 +4,7 @@
   lib,
   pkgs-stable,
   nix-colors,
+  neovim-config,
   ...
 }:
 
@@ -20,6 +21,8 @@ let
        
   '';
   nvimAi = import ../../modules/home-manager/neovim/nvim-ai.nix { inherit pkgs; };
+  notifyUponFinish = import ../../modules/home-manager/notify-upon-finish.nix { inherit pkgs; };
+
 in
 {
   wayland.windowManager.hyprland = {
@@ -29,7 +32,7 @@ in
       exec-once = [
         ''${startupScript}/bin/start''
         "[workspace 3 silent] slack"
-        "[workspace 2 silent] chromium-browser"
+        "[workspace 2 silent] chromium-browser --new-window https://chatgpt.com/"
         "[workspace 1 silent] kitty"
       ];
       "$mainMod" = "SUPER";
@@ -135,6 +138,7 @@ in
   nixpkgs.config.allowUnfree = true; # Add this line
   home.packages = [
     nvimAi
+    notifyUponFinish
     # git
     pkgs.git
     pkgs.gitui
@@ -148,8 +152,12 @@ in
     pkgs.oauth2c
     pkgs.python3
 
+    pkgs.openssl
+    pkgs.expect
+
     pkgs.libreoffice
     pkgs.galculator
+    pkgs.wirelesstools
 
     # Notifications
     pkgs.libnotify
@@ -159,6 +167,10 @@ in
 
     pkgs.mtr
 
+    pkgs.jq
+    # Terminal UI tool for playing with jq
+    pkgs.jqp
+
     pkgs.dunst
     pkgs.libnotify
     (pkgs.flameshot.overrideAttrs (old: {
@@ -167,9 +179,10 @@ in
     pkgs.xdg-desktop-portal-gtk
     pkgs.swww
     pkgs.kitty
-    pkgs.rofi-wayland
+    pkgs.rofi 
     pkgs.grim
     pkgs.slurp
+    pkgs.iperf
     pkgs.wl-clipboard
     pkgs.networkmanagerapplet
     pkgs.pipewire
@@ -186,7 +199,7 @@ in
     pkgs.nerd-fonts.iosevka
     pkgs.nerd-fonts.iosevka-term
 
-    pkgs-stable.vagrant
+    pkgs.vagrant
     # pkgs.virt-manager
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
@@ -211,6 +224,10 @@ in
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
+    ".zprint.edn".text = ''
+      {:style :justified
+       :width 120}
+    '';
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -282,13 +299,8 @@ in
     };
   };
 
-  home.file.".zprint.edn".text = ''
-    {:style :justified}
-  '';
-
   programs.kitty = {
 
-    
     keybindings = {
       "cmd+shift+t" = "new_tab_with_cwd";
     };
@@ -302,7 +314,7 @@ in
 
   imports = [
     nix-colors.homeManagerModules.default
-    ../../modules/home-manager/neovim/default.nix
+    neovim-config.nixosModules.default
     ../../modules/home-manager/wayland/waybar.nix
   ];
   dconf.settings = {
