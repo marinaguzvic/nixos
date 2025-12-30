@@ -11,7 +11,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-config.url = "github:marinaguzvic/neovim-nix";
+    neovim-config.url = "path:/home/marinadj/Projects/nixos/neovim-nix";
   };
 
   outputs =

@@ -46,11 +46,20 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  #
-  # # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
+  # Use greetd with tuigreet for better Hyprland autologin support
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        user = "greeter";
+      };
+      initial_session = {
+        command = "Hyprland";
+        user = "marinadj";
+      };
+    };
+  };
   # services.xserver.desktopManager.gnome.enable = true;
 
   # Enable CUPS to print documents.

@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  pkgs-stable,
   nix-colors,
   neovim-config,
   ...
