@@ -6,7 +6,6 @@
   config,
   pkgs,
   inputs,
-  outputs,
   nix-colors,
   ...
 }:
@@ -134,29 +133,14 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # User-specific packages moved to home-manager (hosts/default/home/utils.nix)
   environment.systemPackages = with pkgs; [
     nh
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    slack
-    chromium
-    gnomeExtensions.appindicator
-    # gnomeExtensions.pop-shell
-    gnomeExtensions.forge
-    gnomeExtensions.space-bar
-    _1password-gui
-    _1password-cli
     lshw
     unzip
-    trayscale
-    wmctrl
-    psi-notify
-    dnsutils
-    inetutils
-    mqttui
-    pciutils
-    speedtest-cli
-
+    # GNOME extensions moved to hosts/default/home/gnome.nix
   ];
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   services.tailscale.enable = true;
@@ -176,6 +160,7 @@
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.stdenv.hostPlatform.system}".hyprland;
   programs._1password.enable = true;
   programs._1password-gui.enable = true;
+  # Wayland/display session variables - needed for graphical session
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     TERM = "xterm-256color";
