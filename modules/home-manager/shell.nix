@@ -1,4 +1,4 @@
-# Bash shell configuration - suggested module for shell aliases and session vars
+# Bash shell configuration - shell aliases and session vars
 { config, pkgs, ... }:
 
 {

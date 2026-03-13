@@ -17,15 +17,11 @@
     pkgs.jqp
     pkgs.iperf
     pkgs.code-cursor
-    pkgs.bundix
-    pkgs.ruby
     pkgs.vagrant
     pkgs.slack
-    pkgs.trayscale
     pkgs.wmctrl
     pkgs.dnsutils
     pkgs.inetutils
-    pkgs.mqttui
     pkgs.pciutils
     pkgs.speedtest-cli
     pkgs._1password-gui

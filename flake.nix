@@ -21,28 +21,28 @@
 
       # Reusable Home Manager modules - import in home.nix or use with homeConfigurations
       flake.homeModules = {
-        wayland = ./hosts/default/home/wayland.nix;
-        git = ./hosts/default/home/git.nix;
-        clojure = ./hosts/default/home/clojure.nix;
-        utils = ./hosts/default/home/utils.nix;
-        zprint = ./hosts/default/home/zprint.nix;
-        direnv = ./hosts/default/home/direnv.nix;
-        chromium = ./hosts/default/home/chromium.nix;
-        desktop-colors = ./hosts/default/home/desktop-colors.nix;
-        terminal = ./hosts/default/home/terminal.nix;
-        shell = ./hosts/default/home/shell.nix;
-        gnome = ./hosts/default/home/gnome.nix;
+        wayland = ./modules/home-manager/wayland.nix;
+        git = ./modules/home-manager/git.nix;
+        clojure = ./modules/home-manager/clojure.nix;
+        utils = ./modules/home-manager/utils.nix;
+        zprint = ./modules/home-manager/zprint.nix;
+        direnv = ./modules/home-manager/direnv.nix;
+        chromium = ./modules/home-manager/chromium.nix;
+        desktop-colors = ./modules/home-manager/desktop-colors.nix;
+        terminal = ./modules/home-manager/terminal.nix;
+        shell = ./modules/home-manager/shell.nix;
+        gnome = ./modules/home-manager/gnome.nix;
       };
 
       # NixOS configuration
-      flake.nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      flake.nixosConfigurations.hp-linux = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
           inherit nix-colors;
         };
         modules = [
           catppuccin.nixosModules.catppuccin
-          ./hosts/default/configuration.nix
+          ./hosts/hp-linux/configuration.nix
         ];
       };
     };
