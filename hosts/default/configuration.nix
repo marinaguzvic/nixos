@@ -51,7 +51,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
         user = "greeter";
       };
       initial_session = {
@@ -66,12 +66,12 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.avahi = {
     enable = true;
-    nssmdns = true;          # Enables mDNS resolution via NSS
-    publish.enable = true;   # Optional: allows advertising services
+    nssmdns4 = true; # Enables mDNS resolution via NSS
+    publish.enable = true; # Optional: allows advertising services
     publish.addresses = true;
     publish.domain = true;
     publish.workstation = true;
@@ -112,7 +112,7 @@
       inherit nix-colors;
       neovim-config = inputs.neovim-config;
       pkgs-stable = import inputs.nixpkgs-stable {
-        system = "x86_64-linux";
+        system = pkgs.stdenv.hostPlatform.system;
         config = {
           allowUnfree = true;
         };
@@ -157,7 +157,6 @@
     pciutils
     speedtest-cli
 
-
   ];
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   services.tailscale.enable = true;
@@ -177,8 +176,11 @@
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
   programs._1password.enable = true;
   programs._1password-gui.enable = true;
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.sessionVariables.TERM="xterm-256color";
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    TERM = "xterm-256color";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -200,7 +202,7 @@
   xdg.portal.enable = true;
   fonts.fontDir.enable = true;
 
-  
+  services.envfs.enable = true;
   # Virtualization
   virtualisation.docker.enable = true;
   # virtualisation.virtualbox.host.enable = true;
@@ -211,7 +213,7 @@
       package = pkgs.qemu_kvm;
       runAsRoot = true;
       swtpm.enable = true;
-      
+
     };
   };
 }

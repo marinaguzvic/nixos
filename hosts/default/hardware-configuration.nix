@@ -21,7 +21,6 @@
     "usb_storage"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
   boot.blacklistedKernelModules = [
     "rtw88_8821ce"
     "kvm"
@@ -30,7 +29,9 @@
   boot.extraModprobeConfig = ''
     options 8821ce aspm=0 swenc=1 ips=0 fwlps=0
   '';
+  boot.kernelParams = [ "i915.enable_psr=0"];
   boot.extraModulePackages = [ config.boot.kernelPackages.rtl8821ce ];
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.kernelModules = [
     "8821ce"
     "kvm-intel"
@@ -63,4 +64,5 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+hardware.graphics.enable = true;
 }

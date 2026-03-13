@@ -50,14 +50,6 @@ in
         "3, monitor:eDP-1"
       ];
 
-      windowrulev2 = [
-        "noanim, class:^(flameshot)$"
-        "float, class:^(flameshot)$"
-        "move 0 0, class:^(flameshot)$"
-        "pin, class:^(flameshot)$"
-        "monitor 1, class:^(flameshot)$"
-      ];
-
       general = {
         gaps_out = 8;
       };
@@ -115,6 +107,18 @@ in
       ];
     };
 
+    # Flameshot window rules (from https://wiki.hypr.land/Configuring/Window-Rules/)
+    extraConfig = ''
+      # no_anim isn't necessary but animations with these rules might look bad
+      windowrule = match:class flameshot, no_anim on
+      windowrule = match:class flameshot, float on
+      windowrule = match:class flameshot, move 0 0
+      windowrule = match:class flameshot, pin on
+      windowrule = match:class flameshot, no_initial_focus on
+      # set to your leftmost monitor id (1 = HDMI-A-1 in your setup)
+      windowrule = match:class flameshot, monitor 1
+    '';
+
   };
   #
   # Home Manager needs a bit of information about you and the paths it should
@@ -155,13 +159,13 @@ in
     pkgs.expect
 
     pkgs.libreoffice
-    pkgs.galculator
     pkgs.wirelesstools
 
     # Notifications
     pkgs.libnotify
     pkgs.mako
 
+    pkgs.direnv
     pkgs.sshpass
 
     pkgs.mtr
@@ -268,13 +272,20 @@ in
       { id = "jdlkkmamiaikhfampledjnhhkbeifokk"; } # PDF Viewer
     ];
   };
+  programs.direnv = {
+      enable = true;
+      enableBashIntegration = true; # see note on other shells below
+      nix-direnv.enable = true;
+    };
   programs.git = {
     enable = true;
-    extraConfig = {
+    settings = {
       safe.directory = "/etc/nixos";
+      user = {
+        name = "Marina Djordjevic";
+        email = "marina.guzvic@gmail.com";
+      };
     };
-    userName = "Marina Djordjevic";
-    userEmail = "marina.guzvic@gmail.com";
   };
 
   programs.bash = {
