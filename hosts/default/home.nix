@@ -19,7 +19,6 @@ let
     ${pkgs.swww}/bin/swww img ${./wallpapers/wallpaper.jpeg} &
        
   '';
-  nvimAi = import ../../modules/home-manager/neovim/nvim-ai.nix { inherit pkgs; };
   notifyUponFinish = import ../../modules/home-manager/notify-upon-finish.nix { inherit pkgs; };
 
 in
@@ -140,7 +139,6 @@ in
   # environment.
   nixpkgs.config.allowUnfree = true; # Add this line
   home.packages = [
-    nvimAi
     notifyUponFinish
     # git
     pkgs.git
