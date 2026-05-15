@@ -44,9 +44,9 @@ in
       };
 
       input = {
-        kb_layout = "us,rs";
-        kb_variant = ",latin";
-        kb_options = "grp:caps_toggle";
+        kb_layout = "us,rs,hu";
+        kb_variant = ",latin,";
+        kb_options = "compose:ralt,grp:caps_toggle";
       };
 
       bind = [
