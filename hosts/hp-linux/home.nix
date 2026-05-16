@@ -3,16 +3,15 @@
   pkgs,
   lib,
   nix-colors,
-  neovim-config,
   ...
 }:
 
 {
   imports = [
     nix-colors.homeManagerModules.default
-    neovim-config.nixosModules.default
 
     # Home Manager modules
+    ../../modules/home-manager/neovim/default.nix
     ../../modules/home-manager/wayland.nix
     ../../modules/home-manager/git.nix
     ../../modules/home-manager/clojure.nix

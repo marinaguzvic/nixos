@@ -5,16 +5,17 @@ let
     ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator &
     ${pkgs.dunst}/bin/dunst &
     ${pkgs.waybar}/bin/waybar &
-    ${pkgs.swww}/bin/swww init &
+    ${pkgs.awww}/bin/awww init &
 
     sleep 1
 
-    ${pkgs.swww}/bin/swww img ${./wallpapers/wallpaper.jpeg} &
+    ${pkgs.awww}/bin/awww img ${./wallpapers/wallpaper.jpeg} &
   '';
 in
 {
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "hyprlang";
 
     settings = {
       exec-once = [

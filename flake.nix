@@ -12,10 +12,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-config.url = "path:/home/marinadj/Projects/nixos/neovim-nix";
   };
 
-  outputs = inputs@{ flake-parts, nixpkgs, nixpkgs-stable, catppuccin, nix-colors, neovim-config, ... }:
+  outputs = inputs@{ flake-parts, nixpkgs, nixpkgs-stable, catppuccin, nix-colors, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
@@ -32,6 +31,7 @@
         terminal = ./modules/home-manager/terminal.nix;
         shell = ./modules/home-manager/shell.nix;
         gnome = ./modules/home-manager/gnome.nix;
+        neovim = ./modules/home-manager/neovim/default.nix;
       };
 
       # NixOS configuration

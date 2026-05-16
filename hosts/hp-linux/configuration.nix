@@ -38,7 +38,6 @@
     extraSpecialArgs = {
       inherit inputs;
       inherit nix-colors;
-      neovim-config = inputs.neovim-config;
       pkgs-stable = import inputs.nixpkgs-stable {
         system = pkgs.stdenv.hostPlatform.system;
         config = { allowUnfree = true; };

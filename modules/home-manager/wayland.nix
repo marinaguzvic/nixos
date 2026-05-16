@@ -13,7 +13,7 @@
       cmakeFlags = old.cmakeFlags or [ ] ++ [ "-DUSE_WAYLAND_GRIM=ON" ];
     }))
     pkgs.xdg-desktop-portal-gtk
-    pkgs.swww
+    pkgs.awww
     pkgs.rofi
     pkgs.grim
     pkgs.slurp
